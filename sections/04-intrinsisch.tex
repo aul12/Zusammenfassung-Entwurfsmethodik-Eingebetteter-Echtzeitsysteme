@@ -1,0 +1,33 @@
+\chapter{Intrinsische Modelle}
+\section{Datenflussgraph}
+Ein Datenflussgraph besteht aus Knoten $v \in V$, die Rechenoperationen, Aufgaben
+oder Ähnliches modellieren, und Kanten $E \subseteq V \times V$, die den Datenfluss
+zwischen den Operationen beschreiben.
+
+Ein Datenflussgraph kann auch als Petrinetz beschrieben werden. Hierbei sind
+Stellen (Kanten des Datenflussgraphs) Speicher für Daten.
+
+\section{Grundblock- und Kontrollflussgraph}
+\begin{tcolorbox}
+    Ein \textbf{Grundblock} eines Programms ist ein Folge von Befehlen,
+    die den Programmfluss nicht verändern, d.h. ein Grundblock ist ein
+    Befehlssegment, in dem der Programmfluss nicht verzweigt. Begrenzt wird ein
+    Grundblock durch Sprung- oder Verzweigungsbefehle.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    Ein \textbf{Grundblockgraph} ist ein gerichteter, zyklischer Graph $G(V, E)$ mit Knoten
+    die den Grundblöcken eines Programms entsprechen und Kanten, die den Kontrollfluss
+    eines Programms modellieren. Die Kanten können noch mit Verzweigungsbedingungen
+    annotiert werden.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    Ein \textbf{Kontrollflussgraph} ist ein gerichteter, bipartiter, zyklischer
+    Grundblockgraph. Dabei unterscheidet man Steuerblöcke und Basisblöcke.
+\end{tcolorbox}
+
+\section{Kontroll-/Datenflussgraph}
+Die einzelnen Grundblöcke eines Kontrollflussgraphens können durch Datenflussgraphen
+modelliert werden. Ein Kontrollflussgraph mit hierarchisch untergeordneten
+Datenflussgraphen nennt man Kontroll-/Datenflussgraph.
