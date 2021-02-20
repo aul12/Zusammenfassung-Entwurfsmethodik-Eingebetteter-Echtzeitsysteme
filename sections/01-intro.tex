@@ -1,1 +1,123 @@
 \chapter{Einführung}
+\section{Historische Entwicklung}
+\begin{itemize}
+    \item 1928, 1936 mechanisches ABS
+    \item Zweiter Weltkrieg: V2/A4
+    \item 1938: Z1, erster Programmierbarer Rechner
+    \item 1947: Transistor
+    \item ICBMs (Minuteman)
+    \item 1962: Mariner 2, Venus
+    \item 1969: Mondlandung
+    \item 1964: ICs
+    item 1978: Elektronisches ABS
+\end{itemize}
+
+\section{Definition eines eingebetteten Systems}
+Ein eingebettetes System ist ein Rechner oder Computer, der in ein andere technisches System zur Steuerung, Regelung
+oder Überwachung eingebettet ist.
+
+Anforderungen:
+\begin{itemize}
+    \item Zuverlässigkeit
+    \item Raue Umgebung
+    \item Vorhersagbarkeit
+    \item Teilweise: Energieverbrauch/Leistungsaufnahme
+\end{itemize}
+
+Eingebettete Systeme, die ihre Aufgaben rechtzeitig, also innerhalb vorgegebener Fristen erledigen müssen, nennt man
+Echtzeit- ooder Realzeitsysteme.
+
+\begin{tcolorbox}
+Ein \textbf{System} ist eine Menge untereinander in Wechselbeziehung stehender Elemente,
+Objekte, Komponenten oder Module. Dabei erfüllt ein System einen vorgegebenen Zweck.
+Das System erfüllt seine Aufgabe meist durch Umwandlung und Verarbeitung von eingehende
+in ausgehenede Stoff-, Energie- oder Informationsflüsse. Zwischen den einzelnen
+Elementen des Systems bestehen ebenfalls Wechselbeziehungen aus Stoff-, Energie- und
+Informationsflüssen.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+Ein \textbf{Prozess} ist ein Satz von Wechselbeziehungen oder Tätigkeitne, die Eingaben
+(\glqq{}Signale\grqq{}) in Ergebnisse wandeln
+\end{tcolorbox}
+
+\begin{tcolorbox}
+Ein \textbf{eingebettetes System} ist ein Rechner oder Computer, der in einem 
+übergeordneten technischen System einen oder mehrere physikalischen Prozesse kontrolliert.
+Der Rechner ist somit in ein technisches System eingebunden oder eingebettet.
+Dabei reagiert er reaktiv auf Signale und erzeugt nach erfolgter Beechnung wieder Signale,
+um das technische System zu kontrollieren.
+\end{tcolorbox}
+
+\section{Definition der Zeit}
+Motivation: Veränderung (DGLs), Rechtzeitig, Ordnung/Koordination von Ereignissen.
+
+\begin{tcolorbox}
+\textbf{Zeit} ist ein Konstrukt, um Bewegungen n Theorie und Experimenten beschreiben zu
+können.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+Eine \textbf{Uhr} ist ein Messgerät, um Zeit zu messen. Sie besteht aus einem periodischen
+physikalischen Prozess und einem Zählwerk, das die Anzahl der Schwingungen zählt. Der
+Zählstand wird zu jeder Zeit angezeigt.
+\end{tcolorbox}
+
+Historisch:
+\begin{itemize}
+    \item Zeit über Tag (aber nicht gleich lang): Sonne als Periodischer Oszillator aber zu grob.
+    \item 1590: Galileo: Fallexperimente mit Puls als Zeit
+    \item 1640: Galileo: Pendeluhr
+    \item 1687: Newton: Infinitesimalrechnung (Bewegung als Zeitliche Änderung/DGL)
+    \item Heute: UTC über radioaktive Zerfallsprozesse; Elektronische Oszillatoren (Quarz)
+\end{itemize}
+
+\subsection{Messung langer Zeitabstände}
+Problem: Es wird ein \glqq{}ewiger Zähler\grqq{} benötigt.
+
+Alternativen:
+\begin{itemize}
+    \item Natürlicher Zähler: Baumringe (nach oben beschränkt)
+    \item Radioaktive Zerfallsprozesse (Halbwertszeit)
+\end{itemize}
+
+\subsection{Navigation durch Zeit}
+Direkt der Breitengrad über Winkel zwischen Horizont und Sonne (plus Datumskompensation).
+
+Längengrad kann nicht einfach gemessen werden (\glqq{}Längengradproblem\grqq{}).
+
+Ansätze:
+\begin{itemize}
+    \item Koppelnavigation/Odometrie (ungenau)
+    \item Distanz zu Mond/Gestirne (genaue Messinstrumente benötigt, auf schwankendem Schiff schwierig)
+    \item Galileo: Jupitermonde als Uhr
+    \item Kanonenschiffe für Zeitsynchronisierung
+    \item 1760: Chronometer (genau, mechanische Uhr)
+    \item Heute: GPS (weiter basierend auf Zeit, mit vier Satelliten aber keine genaue Uhr notwendig)
+\end{itemize}
+
+\section{Zeit in eingebetteten Systemen}
+\begin{tcolorbox}
+    \textbf{Echtzeitbetrieb} ist der Betrieb eines Rechnersystems, bei dem Programme zur 
+    Verarbeitung anfallender Daten ständig betriebsbereit sind, derart, dass die
+    Verarbeitungsergebnisse innerhalb einer vorgegebenen Zeitspanne verfügbar sind.
+    Die Daten können ja nach Anwendungsfall nach einer zufälligen, zeitlichen Verteilung
+    oder zu bestimmten Zeitpunkten auftreten.
+\end{tcolorbox}
+
+\subsection{Steuerflussdominante Echtzeitsysteme}
+Werden eingebettete Rechner eingesetzt, um physikalische Vorgänge eines technischen
+Prozesses zu steuern, erhält man ein steuerflussdominanten Echtzeitsystem.
+
+Bsp.: Motorsteuerung.
+
+\subsection{Datenflussdominante Echtzeitsysteme}
+Setzt man eingebettete Rechner ein, um die Signalauswertung zu realisieren, erhält man ein
+Datenflussdominantes Echtzeitsystem.
+
+Bsp.: Sonar (Aus dem Skript: SAR, Erklärung zu komplex).
+
+\subsection{Steuerfluss- und datenflussrelevante Echtzeitsysteme}
+Prozesssteuerung und Signalverarbeitung gleichermaßen wichtig.
+
+Bsp: Mobilfunk.
