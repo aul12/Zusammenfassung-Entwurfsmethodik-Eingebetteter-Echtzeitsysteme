@@ -1,0 +1,49 @@
+\chapter{Grundlagen der Modellierung}
+\section{Automaten}
+\begin{tcolorbox}
+Ein \textbf{Standardautomat} $A=(Z, \Sigma, \delta, z_0, Z_F)$ ist beschrieben
+durch die Menge der Zustände $Z$, die Menge der möglichen Ereignisse
+$\sigma \in \Sigma$, die Zustandsübergangsfunktion $\delta = Z \times \Sigma \to Z$,
+den Anfangszustand $z_0$ und der Menge der Endzustände $Z_F$.
+\end{tcolorbox}
+
+\section{Petrinetze}
+\begin{tcolorbox}
+Ein Petrinetz ist ein gerichteter, bipartiter (zwei Knotentypen) Graph
+$PN=(P,T,F,K,M)$, der aus Stellen $p\in P$ und Transitionen $t \in T$ gebildet wird.
+
+Stellen und Transitionen sind jeweils über die Kanten $f \in F$ der Flussrelation
+miteinander verbunden. Jede Stelle $p_i$ ist mit einer Kapazität $k(p) \in K$ und
+einer Anfangsmarkierung $m(p) \in M_0$ annotiert. Jede Transition ist mit einem
+Knotengewicht $w(t)\in W$ annotiert.
+
+Knoten sind entweder Transistionen oder Stellen und Kanten verbinden immer
+Stellen mit Kanten bzw. Kanten mit Stellen, nie Knoten gleichen Typs.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+Den \textbf{Vorbereich} $\cdot t$ einer Transition $t$ bilden alle Stellen von
+denen eine Kante zu der Transition führen:
+\begin{equation}
+    \cdot t = \{y | (y,t) \in F\}
+\end{equation}
+
+Den \textbf{Nachbereich} $t \cdot$ einer Transitition bilden alle direkten Nachfolger:
+\begin{equation}
+    t \cdot = \{y | (t, y) \in F\}
+\end{equation}
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    Ein Petrinetz heißt \textbf{schaltbereit}, wenn mindestens eine Transition
+    schaltbereit ist. Eine Transition $t \in T$ ist schaltbereit, falls die entsprechenden
+    Marker geschaltet werden können ohne Kapazitätsgrenzen zu verletzen.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    Ein Petrinetz ohne schaltbereiten Transitionen nennt man ein totes Petrinetz,
+    im Gegensatz dazu wird ein Petrinetz mit schaltbereiten Transitionen als
+    lebendiges Petrinetz bezeichnet
+\end{tcolorbox}
+
+Petrinetze können genutzt werden um ein Deadlock in einem System zu erkennen.
