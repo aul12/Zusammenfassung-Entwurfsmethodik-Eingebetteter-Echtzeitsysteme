@@ -1,0 +1,139 @@
+\chapter{Modellgestützte Systemsynthese}
+Ziel: Systematischer Entwurf eines möglichst Kostengünstigen Systems das alle 
+Randbedingungen einhält.
+
+Ablauf:
+\begin{enumerate}
+    \item Spezifikation:
+        \begin{itemize}
+            \item Tools: Spezifikations-, Programmier- oder Hardwarebeschreibungssprache
+            \item Anforderungen z.B. Zeitfristen, Energieverbrauch, Kosten
+        \end{itemize}
+    \item Modell:
+        \begin{itemize}
+            \item Wird mit Compiler aus Spezifikation gewonnen
+            \item Wählt Bauelemente (Hardware und Software) aus Plattformbibliothek
+        \end{itemize}
+    \item Intrinsische Analyse: 
+        \begin{itemize} 
+            \item Extrahiert Parameter die abhängig von der Spezifikation und der Bauelemente ist
+            \item z.B. Ausführungszeit
+        \end{itemize}
+    \item Extrinsische Analyse: 
+        \begin{itemize}
+            \item Das resultierende System wird analysiert
+            \item z.B. Echtzeitverhalten, Energieverbrauch, Kosten
+        \end{itemize}
+    \item Optimierungsverfahren
+        \begin{itemize}
+            \item Ermittelt Entwurfsqualität aus Systemmodell und vergleicht mit anderen Entwürfen
+            \item Kann auch Systemmodell verändern.
+        \end{itemize}
+\end{enumerate}
+
+\begin{tcolorbox}
+    Das \textbf{Entwurfsziel} ist eine Menge verschalteter Hardwarekomponenten, die eine
+    gegebene Menge von Aufgaben unter spezifizierten Randbedingungen ausführt. Dabei sind
+    die Kosten (Fläche, Energieverbrauch, etc.) des System zu minimieren.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    Die \textbf{Spezifikation} enthält alle notwendigen Informationen, um die
+    funktionalen Aufgaben und die Randbedingungen zu beschreiben. Dabei kann die
+    Spezifikation aus den folgenden Einzelteilen bestehen:
+    \begin{itemize}
+        \item Operationen und Relationen (Elementare Rechnenvorschriften oder Logikfunktionen)
+        \item Befehl (Operation oder Kontrollanweisung)
+        \item Programm (Geordnete Menge von Befehlen)
+        \item Aufgabe/Task (Transformation einer Menge von Eingabedaten in eine Menge
+            von Ausgabedaten)
+        \item Prozess (Program + Daten)
+    \end{itemize}
+\end{tcolorbox}
+
+Richtige Wahl der Modellgenauigkeit wichtig: 
+zu genaue Modelle brauche zu lange zum analysieren, zu grobe Modelle ignorieren Details.
+
+Mögliche Modellgenauigkeiten:
+\begin{enumerate}
+    \item Befehle/Operationen
+    \item Basisblöcke
+    \item Aufgaben
+    \item Prozesse
+\end{enumerate}
+
+Die Plattformbilbiothek stellt Kommunikations und Rechenbausteine zur Verfügung. Hinzu
+kommen Verwaltungskompnenten z.B. Treiber und Ablaufplanungsverfahren.
+
+\begin{tcolorbox}
+    Eine \textbf{Verarbeitungseinheit} ist eine befehlersverarbeitende (ISP oder ASIP)
+    oder anwendungsspezifische Hardwarekomponente (ASP) oder eine Kommunikationsstruktur,
+    die in einem festgelegten Zeitintervall exakt eine Aufgabe bearbeiten kann.
+
+    Alternativ: Ressource.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    Eine \textbf{Ausführungsdomäne} verwaltet die Ressourcen eine Verarbeitungseinheit
+    gemäß des spezifizierten Ablaufplanungsverfahrens. Eine Ausführungsdomäne
+    beinhaltet mehrere Ausführungsdomänen oder Tasks: die Prozesse.
+    Zudem enthält eine Ausführungsdomäne ein Ablaufplanungsverfahren, dass festlegt,
+    in welcher Reihenfolge die einzelnen Prozesse abgearbeitet werden.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    Unter \textbf{Nettoausführungszeit (Ausführungszeit)} versteht man die Ausführungszeit
+    einer Task oder eines Programs, wenn diese die Ressource exklusiv zur Verfügung hat
+    und nicht von anderen Tasks unterbrochen wird. Es wird zwischen $c^+$ und $c^-$
+    (worst- bzw. best-case execution time) unterschieden.
+\end{tcolorbox}
+
+Verfahren zur Bestimmung der Nettoausführungszeit:
+\begin{itemize}
+    \item Direkte Messung (nicht alle möglichen Pfade, Messung kann Zeit beeinflussen)
+    \item Simulation (Instruction Set Simulator, weiterhin nicht alle Pfade)
+    \item Probabilistisch (Nur Verteilungsfunktion wird bestimmt)
+\end{itemize}
+
+\begin{tcolorbox}
+    Die \textbf{Bruttoausführungszeit (Antwortzeit)} entspricht der Zeit, die nach
+    Aktivierung der Task gewartet werden muss bis ein Ergebnis vorliegt (Benennung
+    $r^+$ und $r^-$).
+\end{tcolorbox}
+
+Die Optimierung besteht aus den folgenden Schritten:
+\begin{enumerate}
+    \item Allokation: Auswahl und Bestimmung der Verarbeitungseinheiten und
+        Ausführungsdomänen. 
+    \item Bindung: Bestimmung welche Task oder Ausführungsdomäne in welcher
+        Ausführungsdomäne oder Verarbeitungseinheit ausgeführt wird.
+    \item Ablaufplanung: Die Ablaufplanung spezifiert nach einem vorgegebenen Schema die
+        Reihenfolge der Abarbeitung von Aufgaben.
+\end{enumerate}
+
+\section{Modellbildung}
+Ein Taskgraph besteht aus Tasks als Knoten, gruppiert in Verarbeitungseinheiten.
+Der Datenaustausch wird durch (gerichtete) Kanten gezeigt.
+In einem Taskgraph können auch Busse als Verarbeitungseinheiten eingefügt werden
+und die selben Methoden der Ablaufplanung angewandt werden.
+
+Das Taskmodell beschreibt die Ereignissequenz mit der eine Task angeregt wird.
+
+Zudem kann die Rechenzeit der einzelnen Tasks bestimmt werden.
+
+Nun können die Kanten im Graph mit den entsprechenden Ereignissequenzen beschriftet
+werden, die Knoten werden mit der jeweiligen Rechenzeit beschriftet.
+
+\begin{tcolorbox}
+    Das \textbf{Systemmodell} zur Echtzeitanalyse und Entwurfsraumexploration
+    besteht aus folgenden Teilen:
+    \begin{enumerate}
+        \item Ereignismodell: Das Ereignismodell beschreibt die zeitliche Anregung der
+            Tasks vom technischen System und die Kommunikationshäufigkeit im System.
+        \item Taskmodell: Das Taskmodell stellt die Struktur der Anwendung dar. Dabei
+            gibt es an welche Aufgaben Datenabhängigkeiten mit anderen Aufgaben haben
+            und welche maximale und minimale Rechenzeit eine Aufgabe benötigt.
+        \item Prozessmodell: Das Prozessmodell modelliert die Prozess- und
+            Hardwarestruktur und gibt an welche Ressourcen wannn genutzt werden können.
+    \end{enumerate}
+\end{tcolorbox}
