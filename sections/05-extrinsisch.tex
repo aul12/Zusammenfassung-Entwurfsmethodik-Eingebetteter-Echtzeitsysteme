@@ -1,0 +1,456 @@
+\chapter{Extrinsische Modelle}
+\section{Datenflussmodelle}
+Ein markierter Graph ist ein Datenflussgraph bei dem die einzelnen Knoten
+vollständige Tasks sind.
+
+\begin{tcolorbox}
+    Ein \textbf{markierter Graph} ist ein gerichteter Graph. Die Menge $V$ der Knoten
+    entspricht Tasks oder Aufgaben des zu modellierenden Systems. Die Kanten
+    $E \subseteq V \times V$ des Graphens modellieren den Datenfluss von einer Aufgabe zur
+    nächsten, der Vorgang des Datenflusses wird durch eine Marke beschrieben.
+
+    Die Kanten des Graphen entsprechen dabei Speichern nach FIFO-Strategie.
+    Ein markierter Graph kann atomare Zustandswechsel durchführen, dabei
+    konsumiert und produziert ein Knoten in jedem Schritt der Zustandsfolge jeweils
+    eine Marke.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    Ersetzt man die Knoten eines markierten Graphen durch Transitionen und die Kanten
+    durch Stellen, dann entspricht der \textbf{markierte Graph} einem \textbf{Petrinetz}
+    mit den folgenden Eigenschaften:
+    \begin{enumerate}
+        \item Der Vor- und Nachbereich jeder Stelle enthält jeweils nur eine Transistion
+        \item Beliebig viele Marken können auf den Kanten des Graphen gespeichert werden
+        \item Jeder Knoten des Graphen kann genau eine Marke produzieren bzw. konsumieren
+    \end{enumerate}
+\end{tcolorbox}
+
+Besondere Eigenschaften:
+\begin{itemize}
+    \item Die Summe der Marken in einem gerichteten Zyklus ist konstant
+    \item Wenn die Summe der Marken in jedem Zyklus des Graphens positiv ist,
+        so ist der markierte Graph stets lebendig
+\end{itemize}
+
+Bei Systemen, bei denen sich im Verlauf der Berechnung die Raten der Taskaktivierung
+ändern nennt man Multiratensysteme.
+
+\begin{tcolorbox}
+    Ein \textbf{synchroner Datenflussgraph} ist ein gerichteter Graph.
+    Dabei ist $V$ die Menge aller Knoten (Aktivitäten oder Aufgaben),
+    $E \subseteq V \times V$ die Menge aller Kanten (FIFO Speicher).
+    Das Attribut $\text{cons}: E \to \mathbb{N}^+$ entspricht die Anzahl der
+    aus dem FIFO-Speicher einer Kante konsumierten Marken, $\text{prod}: E 
+    \to \mathbb{N}^+$ spezifiziert die Anzahl der anfänglich in den Speichern
+    vorhandenen Marken.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    Eine \textbf{Topologiematrix} eines synchronen Datenflussgraphen wird wie folgt 
+    gebildet:
+    Verläuft eine Kante $e_j$ von Knoten $v_i$ nach Knoten $v_k$, dann sind alle
+    Einträge der Spalte $c_j$ bis auf $c_{ij}=-\text{prod}(v_i, v_k)$ und
+    $c_{kj}=-\text{prod}(v_i, v_k)$ gleich Null.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    Ersetzt man die Knoten des \textbf{synchronen Datenflussgraphen} durch Transistionen,
+    die Kanten durch Stellen, so erhält man ein äquivalentes \textbf{Petrinetz}. Mit folgenden
+    Eigenschaften:
+    \begin{itemize}
+        \item Der Vor- und Nachbereich einer Stelle enthält jeweils nur ein Transistion.
+        \item Die Kapazität der Stellen ist unbegrenzt
+        \item Jeder Eingangskante einer Transition wird ein Kantengewicht
+            $\text{cons}(t,p) = w(p,t)$ und jeder Ausgangskante einer Transition
+            ein Kantengewicht $\text{prod}(t,p) = w(t,p)$ zugewiesen.
+    \end{itemize}
+\end{tcolorbox}
+
+\subsection{Taskgraphen}
+\begin{tcolorbox}
+    Eine \textbf{Task} $\tau \in \Gamma$ ist definiert durch folgende Struktur
+    \begin{equation}
+        \tau = (c^+, c^-, d)
+    \end{equation}
+    mit der maximalen Nettoausführungszeit $c^+$, der minimalen Nettoausführungszeit
+    $c^-$ und der Zeitfrist $d$.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    Ein Taskgraph $G_\tau(\Gamma, E)$ ist ein Graph, der Knoten $\tau \in \Gamma$ und
+    Kanten $e \in E \subseteq \Gamma \times \Gamma$. Jeder Kante $e \in E$ ist dabei ein
+    Kantengewicht $\Theta$ zugeordnet.
+
+    Das Kantengewicht nennt man auch Ereignissequenz ind beschreibt den zeitlichen
+    Mindestabstand zwischen Ereignissen auf dem Kommunikationskanal zwischen $\tau_i$
+    und $\tau_j$.
+\end{tcolorbox}
+
+\section{Ereignissequenzen}
+\begin{tcolorbox}
+    Eine \textbf{Ereignissequenz} ist eine zeitliche Abfolge von Ereignissen und wird
+    mit $\Theta$ bezeichnet.
+\end{tcolorbox}
+
+Die Anzahl von Ereignissen pro Zeiteinheit soll Ereignisdichte heißen. Wird dabei das
+maximal mögliche Auftreten von Ereignissen so spricht man von einer maximalen 
+Ereignisdichte $\eta^+(t)$, beschreibt man das minimal mögliche Auftreten von Ereignissen,
+spricht man von der minimalen Ereignisdichte $\eta^-(t)$.
+
+\begin{tcolorbox}
+    Sei $[t_1, t_2]$ ein Zeitintervall, der Länge $t=t_2-t_1$ und $\Theta$ eine
+    Ereignissequenz, dann bestimmt die \textbf{begrenzte Ereignisdichte} $\eta: \mathbb{R}
+    \to \mathbb{N}$ die Summe aller in disem Zeitintervall aufgetretenen Ereignisse.
+
+    Dabei sind $t_1$ und $t_2$ eingeschlossen.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    Es gilt:
+    \begin{equation}
+        \eta^+(t) \geq \eta(t) \geq \eta^-(t)
+    \end{equation}
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    Die \textbf{unbegrenzte Ereignisdichte} ist die begrenzte Ereignisdichte
+    bis zu $t_2 - \varepsilon$ für $\varepsilon \to 0$ und wird mit 
+    $\check{\eta}$ bezeichnet.
+\end{tcolorbox}
+
+Im folgenden wird Ereignisdichte die begrenzte Ereignisdichte bezeichnet.
+
+\subsection{Periodische Ereignissequenz}
+Ein Ereignis wird periodisch, mit zeitlichem Abstand $p$ unendlich oft wiederholt.
+
+Formal:
+\begin{equation}
+    \Theta = \{\Theta_p\} \text{ mit } \Theta_p = p
+\end{equation}
+
+Die begrenzte Ereignisdichte ist gegeben durch:
+\begin{equation}
+    \eta(t) = \floor*{\frac{t}{p}} + 1
+\end{equation}
+
+Die unbegrenzte Ereignisdichte durch:
+\begin{equation}
+    \check{\eta} = \ceil*{\frac{t}{p}}
+\end{equation}
+
+\subsection{Periodische Ereignissequenz mit Jitter}
+Erweiterung des periodischen Modells bei dem Ereignisse um bis zu$\pm j$ verschoben sein
+können.
+
+Formal:
+\begin{equation}
+    \Theta = \{\Theta_\text{jitter}\} = \{(p, j)\}
+\end{equation}
+
+Im Mittel ist die Ereignisdichte gleich der Ereignisdichte der Periodischen 
+Ereignissequenz.
+
+Die maximale Ereignisdichte ist jedoch gegeben durch:
+\begin{equation}
+    \eta^+(t) = \floor*{\frac{t+2 j}{p} + 1}
+\end{equation}
+
+\subsection{Sporadisch, periodische Ereignissequenz}
+Periodisch ($p_0$) treten $n$ Ereignisse als Burst mit Periode $p_i$ auf.
+
+Formal:
+\begin{equation}
+    \Theta = \{\Theta_\text{sporadic}\} = \{(p_i, p_0, n)\}
+\end{equation}
+
+Die maximale Ereignisdichte lässt sich (sehr konservativ) durch die
+Dichte der inneren, periodischen, Ereignissequenz abschätzen.
+
+\subsection{Periodische Ereignissequenz mit initialem Schub}
+Die Ereignissequenz besteht aus einem initialen Schub gefolgt von einer periodischen
+Ereignissequenz.
+
+Es gilt $j>p$. Die äußere Periode ist $p$, die innere $a$.
+\begin{equation}
+    \Theta = \{\Theta_\text{burst}\} = \{(p, j, a)\}
+\end{equation}
+
+Die Ereignisdichte ist gegeben durch:
+\begin{equation}
+    \eta(t) = \min\left(\floor*{\frac{t+j}{p}} + 1, \floor*{\frac{t}{a}} + 1\right)
+\end{equation}
+
+\section{Ereignisströme}
+Erweiterung für beliebige Strukturen.
+
+\begin{tcolorbox}
+Ein \textbf{Ereignisstrom} ist eine Ereignissequenz $\Theta$, in der alle Ereignisse
+mit ihrem kürzesten Abstand auftreten. Beschrieben wird ein Ereignisstrom durch eine
+Folge von Ereignistupeln $\theta$. Jedes Tupel besteht aus einer Periode $p$, die
+es ermöglicht Wiederholungen von Ereignissequenzen zu beschreiben und einem Zeitintervall
+$a$, welches den minimalen Abstand, der auf dieses Tupel bezogenen Ereigniszahl festlegt.
+
+Der Abstand $a_i$ im $i$-ten Tupel bestimmt demnach die Dichte von $i$ Ereignissen:
+\begin{equation}
+    \Theta = \{\theta_i\} = \left\{ \binom{p}{a}_i\right\}
+\end{equation}
+\end{tcolorbox}
+
+Alternative Beschreibung:
+\begin{itemize}
+    \item Bestimme $\eta^+(\Delta t)$ durch Sliding Window
+    \item Sprünge der resultierenden Treppenform beschreiben:
+        $a$ ist Offset, $p$ ist Periode, Sprung ist jeweils eins hoch
+    \item Durch Superposition einzelnen Treppenfunktionen $\eta^+(\Delta t)$
+        bestimmen
+\end{itemize}
+
+Die maximale Ereignisdichte berechnet sich durch:
+\begin{equation}
+    \eta^+(\Delta t, \Sigma) = \sum_{\theta \in \Theta, \Delta t \geq a_\theta}
+        \floor*{\frac{\Delta t - a_\theta}{p_\theta}} + 1
+\end{equation}
+
+Hinweise:
+\begin{itemize}
+    \item Die Ereignisdichte ist nach definition die maximale
+    \item Es findet implizit eine Abbildung in den Intervallbereich statt
+    \item Die jeweils maximale Ereignisdichte kann über ein sliding Window
+        Ansatz bestimmt werden
+\end{itemize}
+
+\subsection{Maximale Dichte}
+\begin{tcolorbox}
+    \textbf{Maximale Ereignisdichte: } Sei $\Theta^+$ die zur Anregung $\Theta$
+    zugehörige Anregung maximaler Dichte. Die Dichte der maximalen Ereignissequenz
+    beschreibt die maximale Anzahl von Ereignissen für ein gegebenes Zeitintervall
+    $\Delta t$ aus der Ereignissequenz $\Theta$:
+    \begin{equation}
+        \eta(\Theta^+, \Delta t) = \max_{t \in \mathbb{R}^+} \left(
+        \eta(\Theta, t + \Delta t) - \check{\eta}(\Theta, t)
+        \right)
+    \end{equation}
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    \textbf{Monotonie der maximalen Dichte: } Die begrenzte Ereignisdichte der Anregung
+    maximaler Dichte $\eta(\Theta^+, \Delta t)$ ist monoton wachsend bezüglich
+    $\Delta t$.
+\end{tcolorbox}
+
+\subsection{Minimale Dichte}
+Die minimale Dichte beschreibt eine Ereignissequenz mit minimaler Ereignisse
+pro Zeiteinheit aus der Ereignissequenz $\Theta$. Die Aussagen zur maximalen Dichte
+lassen sich analog auch auf die minimale Dichte übertragen.
+
+\subsection{Periodische Ereignissequenz als Ereignisstrom}
+Die periodische Ereignissequenz $\Theta = \{p\}$ kann mit einer Folge wiederkehrender,
+periodischer Ereignisse mit Abstand $0$ in der Notation des Ereignisstroms beschrieben
+werden.
+
+Die periodische Ereignissequenz ist homogen, d.h. die minimale ist gleich der maximalen
+Ereignisdichte. D.h. Ereignisstrom und Ereignisdichte sind gleich.
+
+\subsection{Periodische Ereignisequenz mit Jitter als Ereignisstrom}
+Der Ereignisstrom ist gegeben durch:
+\begin{equation}
+    \Theta^+ = \left\{ \binom{\infty}{0}_1, \binom{p}{p-2j}_2 \right\}
+\end{equation}
+
+\subsection{Sporadisch periodische Ereignissequenz als Ereignisstrom}
+Der Ereignisstrom ist gegeben durch:
+\begin{equation}
+    \Theta^+ = \left\{ \binom{p_i}{(1-1)p_0}_1, \binom{p_i}{(2-1)p_0}_2, \cdots, \binom{p_i}{(n-1)p_0}_{n-1}, 
+        \binom{p_i}{p_0}_n \right\}
+\end{equation}
+
+\subsection{Periodische Ereignissequenz mit initialem Schub als Ereignisstrom}
+Zuerst muss der Wechselpunkt zwischen initialem Schub und Periodischen Verhalten
+bestimmt werden:
+\begin{equation}
+    n = \ceil*{\frac{j}{p-a}}
+\end{equation}
+
+Damit kann der Ereignisstrom analog zum Modell Sporadisch periodisch definiert werden:
+\begin{equation}
+    \Theta^+ = \left\{
+        \binom{\infty}{0}_1,
+        \binom{\infty}{a}_2,
+        \binom{\infty}{2a}_3,
+        \cdots,
+        \binom{\infty}{(n-1)a}_n,
+        \binom{p}{np-j}_{n+1}
+        \right\}
+\end{equation}
+
+
+\section{Ereignisspektrum}
+Problem: Ereignisströme werden zu komplex.
+
+Lösung: Hierarchische Ereignisströme.
+
+\begin{tcolorbox}
+    Ein \textbf{Ereignisspektrum} $\hat{\Theta}$ beschreibt allgemein die Beziehung
+    zwischen dem Auftreten von Ereignissen bezogen auf ein gegebenes Zeitintervall
+    $\Delta t$ und erlaubt es, beliebig geschachtelte Ereignissequenzen zu beschreiben.
+    
+    Sei $\hat{\Theta} = \{\hat{\theta}\}$ eine Menge von Spektralelementen
+    \begin{equation}
+        \hat{\theta}_i = \left(p_{\hat{\theta}}, a_{\hat{\theta}}, 
+            \lambda_{\hat{\theta}}, f_{\hat{\theta}}, \hat{\Theta}_{\hat{\theta}}
+            \right) 
+    \end{equation}
+    mit
+    \begin{itemize}
+        \item $p$ Abstand der Ereignisse des Tochterspektrums
+        \item $a$ Phase
+        \item $\lambda$ Anzahl der vom Tochterspektrum erzeugten Ereignisse
+        \item $f$ Eingebettete Ereignisrate
+        \item $\hat{\Theta}$ Tochterspektrum
+    \end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    Sei $\hat{\theta}_i = \left(p_{\hat{\theta}}, a_{\hat{\theta}}, \lambda_{\hat{\theta}}, f_{\hat{\theta}}, \hat{\Theta}_{\hat{\theta}}\right)$
+    ein Ereignisspektrum. Dann spricht man von einem gültigen Ereignisspektrum,
+    wenn einerseits einzelne Spektralelemente nicht überlappen und andererseits
+    entweder $f=0$ oder $\hat{\Theta} = \emptyset$.
+\end{tcolorbox}
+
+\subsection{Umwandlung zu gültigen Ereignisspektren}
+\begin{tcolorbox}
+    \textbf{Ereignisintervall: } Sei $n$ die Anzahl von Ereignissen und $\theta$ ein
+    Ereignisspektralelement, dann berechnet sich das kleinste Interval $\Delta t$ in
+    dem $\theta$ $n$ Ereignisse erzeugt werden mit:
+    \begin{equation}
+        \Delta t(n, \hat{\theta}) = \argmin_{\Delta t \in \mathbb{R}^+}\left(
+            \eta(\Delta t, \hat{\theta}) \geq n\right)
+    \end{equation}
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    Jedes Ereignisspektrum kann in ein \textbf{gültiges Ereignisspektrum umgewandelt}
+    werden. Das der Separationsbedingung genügende Spektrum errechnet sich wie folgt:
+    \begin{eqnarray}
+        \hat{\Theta} &=& \{\hat{\theta}_1, \ldots, \hat{\theta}_k\} \\
+        \text{mit } \hat{\theta}_i &=& \left(
+            k p_{\hat{\theta}}, (i-1) p_{\hat{\theta}} + a_{\hat{\theta}},
+            \lambda_{\hat{\theta}}, f_{\hat{\theta}}, \hat{\Theta}_{\hat{\theta}}\right) \\
+        \text{und } k &=& \ceil*{\frac{\Delta t(\lambda_{\hat{\theta}}, \hat{\Theta}_{\hat{\theta}})}{p_{\hat{\theta}}}}
+    \end{eqnarray}
+\end{tcolorbox}
+
+\subsection{Ereignisspektraldichte}
+Definition der Ereignisdichte auf Basis von Ereignisspektren.
+
+\begin{tcolorbox}
+    \textbf{Ereignisspektraldichte:} Sei für jedes $\Delta t$
+    \begin{equation}
+        \eta(\Delta t, \hat{\Theta}) = \sum_{\hat{\theta} \in \hat{\Theta}, 
+            a_{\hat{\theta}} \leq \Delta t}
+            \eta(\Delta t, \hat{\theta})
+    \end{equation}
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    Eine Funktion $f: A \to B$ ist \textbf{subadditiv}
+    \begin{equation}
+        \Leftrightarrow \forall x, y \in A:
+            f(x+y) \leq f(x) + f(y)
+    \end{equation} 
+
+    die Funktion heißt \textbf{superadditiv}
+    \begin{equation}
+        \Leftrightarrow \forall x, y \in A:
+            f(x) + f(y) \leq f(x+y)
+    \end{equation}
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    $\hat{\Theta}$ ist ein oberes oder \textbf{maximales Spektrum} $\hat{\Theta}^+$, 
+    wenn alle
+    Ereignisspektralelemente gültige Elemente sind und wenn die Ereignisdichte
+    subadditiv bezüglich $\Delta t$ ist, also gilt:
+    \begin{equation}
+        \forall \Delta t_1, \Delta t_2 \in \mathbb{R}^+_0:
+            \eta(\hat{\Theta}^+ , \Delta t_1 + \Delta t_2) \leq
+            \eta(\hat{\Theta}^+ , \Delta t_1) +\eta(\hat{\Theta}^+ , \Delta t_2)
+    \end{equation}
+    äquivalent dazu sind \textbf{minimale Ereignisspektren} superadditiv.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+    Jedes Ereignisspektrum kann in ein \textbf{äquivalentes Spektrum minimaler
+    Tiefer} umgeformt werden, dabei hat das Ereignisspektrum nur noch eine
+    Rekursionstiefe von eins.
+\end{tcolorbox}
+
+Ein Ereignisspektrum
+\begin{equation}
+    \hat{\Theta}_\alpha = \{p_\alpha, a_\alpha, \lambda_\alpha, 0, \hat{\Theta}_\alpha'\}
+\end{equation}
+mit dem Tochterspektrum
+\begin{equation}
+    \hat{\Theta}_\alpha' = \{(p_1', a_1', \lambda_1', 0, \hat{\Theta}_1'),
+        \cdots (p_k', a_k', \lambda_k', 0, \hat{\Theta}_k')\}
+\end{equation}
+wird zu
+\begin{equation}
+    \hat{\Theta}_\beta = \{\hat{\theta}_{\beta, 1}, \cdots, \hat{\theta}_{\beta, k+1}\}
+\end{equation}
+mit
+\begin{equation}
+    \hat{\theta}_{\beta, i} = (p_\alpha, a_\alpha, \eta(\Delta t_\alpha, 
+        \hat{\theta}_{\alpha,i}'), 0, \hat{\theta}_{\alpha, i}')
+\end{equation}
+und ($\varepsilon > 0$)
+\begin{equation}
+    \Delta t_\alpha = \lim_{\varepsilon \to 0} \left(
+        \Delta t(\lambda_\alpha, \Theta_\alpha') - \varepsilon\right)
+\end{equation}
+sowie
+\begin{equation}
+    \hat{\theta}_{\beta, k+1} = \left(\infty, \Delta t(\lambda_\alpha, \hat{\Theta}_a'),
+        \lambda_\alpha - \sum_{\hat{\theta}_\alpha \in \hat{\Theta}_\alpha}
+        \eta(\Delta t_\alpha, \hat{\theta}_{\alpha, i}), \infty, \emptyset\right)
+\end{equation}
+
+\subsection{Periodische Ereignissequenz als Ereignisspektrum}
+\begin{eqnarray}
+    \hat{\Theta}^+ &=& \{(p, 0, 1, \infty, \emptyset)\} \\
+    \hat{\Theta}^- &=& \{(p, p, 1, \infty, \emptyset)\}
+\end{eqnarray}
+
+\subsection{Ereignissequenz mit Jitter als Ereignisspektrum}
+Für $j<p$:
+\begin{eqnarray}
+    \hat{\Theta}^+ &=& \{(p,0,1,\infty, \emptyset), (p, p-2j, 1, \infty, \emptyset)\} \\
+    \hat{\Theta}^- &=& \{(p,0,1,\infty, \emptyset), (p, p+2j, 1, \infty, \emptyset)\}
+\end{eqnarray}
+für $j>p$:
+\begin{eqnarray}
+    \hat{\Theta}^+ &=& \left\{\left(\infty, 0, \floor*{\frac{j}{p}}, \infty, \emptyset\right), \left(p, p-\left(\frac{j}{p} - \floor*{\frac{j}{p}}\right), 1, \infty, \emptyset\right)\right\} \\
+    \hat{\Theta}^- &=& \{(\infty,0,1,\infty, \emptyset), (p, p+2j, 1, \infty, \emptyset)\} 
+\end{eqnarray}
+
+\subsection{Periodisch sporadische Ereignissequenz als Ereignisspektrum}
+\begin{eqnarray}
+    \hat{\Theta}^+ &=& \left\{ \left( p_0, 0, n, 0, \left\{(p_i, 0, 1, \infty, \emptyset)\right\}\right)\right\} \\ 
+    \hat{\Theta}^- &=& \left\{ \left( \infty, 0, 1, \infty, \emptyset\right),
+        \left(p_0, p_0, n, 0, \left\{ (p_i, 0, 1, \infty, \emptyset) \right\} \right)
+        \right\}
+\end{eqnarray}
+
+\subsection{Periodische Ereignissequenz mit initialem Schub}
+\begin{eqnarray}
+    \hat{\Theta} &=& \left\{\left(\infty, 0, \floor*{\frac{j}{p-a}}, 0,
+        \left\{(a, 0, 1, \infty, \emptyset)\right\}\right), \left(p, np-j, 1, \infty, \emptyset\right)\right\} \\
+    \hat{\Theta}^- &=& \left\{(\infty, 0, 1, \infty, \emptyset), (p, p+j, 1, \infty, \emptyset)\right\} \\
+    \hat{\Theta}^+ &=& \left\{\left(\infty, 0, n, 0, \left\{(a,0,1,\infty,\emptyset)\right\}\right), (p, d, 1, \infty, \emptyset)\right\}
+\end{eqnarray}
+mit
+\begin{eqnarray}
+    n &=& \floor*{\frac{j}{p}+1} \\
+    d &=& n p -j
+\end{eqnarray}
