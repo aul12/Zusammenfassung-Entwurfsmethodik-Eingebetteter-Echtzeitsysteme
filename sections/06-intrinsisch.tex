@@ -1,0 +1,55 @@
+\chapter{Intrinsische Analyse}
+Unterscheidung:
+\begin{itemize}
+    \item Profiling: Aufrufhäufigkeiten statistisch erfasst
+    \item Flussanalyse: Längster Programmpfad wird gesucht
+\end{itemize}
+
+\section{Prozessorspezifische Schätzung}
+Maschinencode wird mit Zielcompiler erstellt, Information aus Profiling wird
+genutzt um Zykluszeit zu bestimmen.
+
+\section{Generischer Schätzer}
+Compiler Frontend wird genutzt um Prozessorunabhängigen drei-Adresscode zu generiern.
+Technologiedatei für den Zielprozessor sammelt Ressourcenverbrauch (Zeit, Speicher)
+pro drei-Adresscode. Mithilfe der Informationen aus dem Profiling kann dann die
+minimale und maximale Ausführungszeit bestimmt werden.
+
+\section{Schätzung durch Programmpfadanalyse}
+Kein ausführen/Simulieren des Programms, die maximale und minimale Nettoausführungszeit
+werden durch Fluss- oder Pfadanalyse bestimmt.
+
+Es wird zuerst ein Basisblock oder Kontrollflussgraph erstellt. Die Ausführungszeiten
+der Basisblöcke wird als bekannt und konstant angenommen. Jeder Basisblock
+wird mit Ausführungszeit $c_i$ und Aufrufhäufigkeit $x_i$ annotiert.
+
+Die minimale und maximale Ausführungszeit kann dann über die Suche nach dem 
+kürzesten/längsten Programmpfad bestimmt werden:
+\begin{equation}
+    c^+ = \max\left(\sum_{i=1}^n c_i x_i \right)
+\end{equation}
+dafür muss die Anzahl der Schleifendurchläufe ich vorraus bekannt oder zumindest
+beschränkt sein.
+
+\section{Strukturelle Randbedingungen}
+Beschreiben die Struktur des Basisblockgraphens. Jede Kante wird mit $d$, der
+Aufrufhäufigkeit beschrieben.
+
+Für Verzweigungen gilt:
+\begin{equation}
+    d_\text{Condition} = d_\text{true} + d_\text{false}
+\end{equation}
+
+Für Schleifen gilt:
+\begin{equation}
+    d_\text{Begin} + d_\text{Loop} = d_\text{true} + d_\text{false}
+\end{equation}
+
+\section{Funktionale Randbedingungen}
+Funktionale Randbedingungen modellieren die Aufrufhäufigkeiten, die sich aus Belegung
+von Variablen etc. ergibt.
+
+\section{Mikroarchitekturmodellierung}
+Um komplexere Ausführungsmodelle (Cache, Pipelining) zu berücksichtigen
+muss die Kostenfunktion erweitert werden, so kann z.B. $c_i$ in $c_i^\text{miss}$
+und $c_i^\text{hit}$ mit dazugehörigem $x_i^\text{miss}$ und $x_i^\text{hit}$.
