@@ -1,0 +1,196 @@
+\chapter{Extrinsische Analyse}
+\section{Ablaufplanung nach Fristen}
+\subsection{Echtzeittest}
+Bei der Ablaufplanung nach Fristen wird die Task geplant, deren spezifiziert Ablauffrist
+als erstes erreicht wird.
+
+Jede Task wird durch $c^+$ (maximale Nettoausführungszeit) und $d$ (Deadline) beschrieben,
+zudem wird die Anregung durch $\hat{\Theta}$ beschrieben.
+
+Die Angeforderte Rechenzeit ist dann gegeben durch:
+\begin{equation}
+    \rho(\Delta t, \tau) = \eta(\Delta t, \theta_\tau) c^+_\tau
+\end{equation}
+verschiebt man die Rechenzeitanforderung um die Deadline erhält man die Zeit,
+die der Prozessor zu diesem Zeitpunkt abgearbeitet haben muss:
+\begin{equation}
+    \delta(\Delta t, \tau) = \rho(\Delta t - d_\tau, \tau)
+\end{equation}
+folglich muss stets gelten:
+\begin{equation}
+    \delta(\Delta t, \tau) \leq \Delta t
+\end{equation}
+
+dieser Test lässt sich auf eine Menge unabhängiger Tasks erweitern:
+\begin{equation}
+    \delta(\Delta t, \Gamma) = \sum_{\tau \in \Gamma} \rho(\Delta t, \tau)
+\end{equation}
+auch hier muss gelten:
+\begin{equation}
+    \delta(\Delta t, \Gamma) \leq \Delta t
+\end{equation}
+das ist der Test über die Rechenzeitanforderungsdichte (demand bound function)
+
+\subsection{Rechenzeitanforderungsdichte und Echtzeitnachweis für das periodische
+Ereignismodell}
+Für das periodische Ereignismodell ist die Ereignisdichte gegeben durch:
+\begin{equation}
+    \eta^+(\Delta t, \hat{\theta}^+) = \floor*{\frac{\Delta t}{p} + 1}
+\end{equation}
+
+\begin{tcolorbox}
+    \textbf{Rechenzeitanforderungstest für periodische Tasks} Sei $\Gamma$ eine
+    Menge unabhängiger, periodischer, unterbrechbarer Tasks, die auf einem Prozessor 
+    mit EDF geplant werden. Diese Taskmenge hält alle gesetzte Fristen ein, falls gilt:
+    \begin{equation}
+        \delta^+(\Delta t, \Gamma) = \sum_{\tau \in \Gamma} 
+            \floor*{\frac{\Delta t - d_\tau}{p_\tau} + 1} c^+_\tau \leq \Delta t\ \ 
+        \forall \Delta t: \min_{\tau \in \Gamma}(d_\tau) \leq \Delta t \leq h
+    \end{equation}
+    dabei ist $h$ die Hyperperiode, also das kleinste gemeinsame Vielfache aller
+    Perioden.
+\end{tcolorbox}
+
+für den Fall das Frist gleich der Periode ist vereinfacht sich die Bedingung zu:
+\begin{equation}
+    \sum_{\tau \in \Gamma} \floor*{\frac{\Delta t}{p_\tau}} c_\tau^+ \leq \Delta t
+\end{equation}
+durch abschätzen der Gaußklammer durch ihr Argument erhält man die Auslastungsanalyse
+\begin{tcolorbox}
+    \textbf{Auslastungsanalyse:} Sei $\Gamma$ eine Menge unabhängiger, unterbrechbarer,
+    periodischer Tasks die auf einem Prozessor nach EDF geplant werden. Unter der Annahme,
+    dass alle Fristen gleich der Periode sind hält diese Taskmenge die gesetzten Fristen
+    ein falls gilt:
+    \begin{equation}
+        \sum_{\tau \in \Gamma} \frac{c^+_\tau}{p_\tau} \leq 1
+    \end{equation}
+    die Summe wird auch als Auslastung $U$ bezeichnet.
+\end{tcolorbox}
+
+\section{Effizienter Echtzeittest}
+Es wird betrachtet für welche $\Delta t$ die Rechenzeitanforderungsanalyse
+ausgewertet werden muss. Da $\delta$ eine stückweise konstante Funktion mit
+Sprüngen ist reicht es die Funktion an den Sprungstellen auszuwerten:
+\begin{equation}
+    \Delta = \bigcup_{\tau \in \Gamma} \left\{t | t = np_\tau + d_\tau, n \in \mathbb{N}^+,
+        t < h\right\}
+\end{equation}
+offensichtlich gilt $\abs{\Delta} \in \mathcal{O}(\exp(\abs{\Gamma}))$.
+
+Für einen effizienten Test müssen also Approximationen eingesetzt werden.
+
+\subsection{Verkürzung der Testgrenze}
+\begin{tcolorbox}
+    \textbf{Testgrenze nach Baruah:} Es ist ausreichend den Echtzeittest bis zur
+    Testgrenze:
+    \begin{equation}
+        h' = \frac{U}{1-U} \max_{\tau \in \Gamma} (p_\tau - d_\tau)
+    \end{equation}
+    durchzuführen
+\end{tcolorbox}
+
+Beweisansatz: Annahme: Frist wird verletzt, 
+Definition Rechenzeitanforderungsanalyse, Gaußklammern abschätzen,
+$p_\tau - d_\tau$ durch Maximum abschätzen, $\delta$ durch $\Delta t$ nach unten abschätzen
+nach $\Delta t$ auflösen.
+
+\begin{tcolorbox}
+    \textbf{Testgrenze nach Ripoll: } Es ist ausreichend, den Echtzeittest bis zur
+    Testgrenze:
+    \begin{equation}
+        h'' = \frac{\sum_{\tau \in \Gamma} (p_\tau - d_\tau) \frac{c_\tau}{p_\tau}}
+                {1-U}
+    \end{equation}
+    durchzuführen.
+\end{tcolorbox}
+Beweisansatz: Gaußklammer der Rechenzeitanforderungsanalyse nach oben abschätzen,
+ergibt Geradengleichung mit positivem y-Achsenabschnitt und Steigung ($=U$) kleiner 1,
+ist also ab $\Delta t'$ garantiert kleiner als $\Delta t$, Schnittpunkt bestimmen,
+neue Testgrenze.
+
+\section{Approximation}
+Problem: bei hoch ausgelasteten Systemen sind alternativen Testgrenzen nicht kürzer.
+
+\subsection{Approximation durch Straffen der Periode}
+Idee: einzelne Perioden verkürzen, macht Test strenger aber kann Hyperperiode drastisch
+kürzen.
+
+\begin{tcolorbox}
+Sei $\delta(\Delta t, \Gamma)$ die Rechenzeitdichte und $\delta'(\Delta t, \Gamma)$ die
+approximierte Rechenzeitdichte, dann ist der Approximationsfehler:
+\begin{equation}
+    \varepsilon = \max_{\delta t \in [0, h]} \left(\frac{\delta'(\Delta t, \Gamma)-
+        \delta(\Delta t, \Gamma)}{\delta(\Delta t, \Gamma)} \right)
+\end{equation}
+\end{tcolorbox}
+Problem: das finden der optimalen Straffung ist wiederrum nicht effizient lösbar.
+
+\subsection{Approximation durch konstante Intervalle}
+Idee: Nicht mehr jeden Testpunkt untersuchen sondern $n$ äquidistante Punkte. Dafür
+müssen alle Sprünge des folgenden Segments nach vorne ziehen.
+
+\begin{tcolorbox}
+Das Testintervall $h$ wird in $n$ Intervalle der Länge $\Delta=\ceil*{\frac{h}{n}}$
+unterteilt. Dann berechnet sich die Rechenzeitdichte zu:
+\begin{equation}
+    \delta'(\Delta t, \Gamma) = \sum_{\tau \in \Gamma} \floor*{
+        \frac{\Delta t + \Delta - \delta_\tau}{p_\tau} + 1} c_\tau^+
+\end{equation}
+\end{tcolorbox}
+
+Der Fehler ist angeblich gegeben durch:
+\begin{equation}
+    \varepsilon \leq \frac{\ceil*{\frac{h}{n}}}{n \ceil*{\frac{h}{n}} +
+        \sum_{\tau \in \Gamma} (p_\tau - d_\tau)}
+\end{equation}
+
+\subsection{Approximation durch Superposition}
+Idee: die Rechenzeitdichte der einzelnen Tasks wird nur für die ersten Sprünge
+genau berechnet, danach durch eine gerade angenähert, die Gesamtrechenzeitdichte
+ergibt sich durch Superposition der einzelnen Taskrechenzeitdichten.
+
+\begin{tcolorbox}
+    \textbf{Approximierte Rechenzeitdichte einer Task:} Die Rechenzeitdichte einer
+    Task kann für $k$ Testpunkte exakt berechnet werden und wird dann durch die
+    mittlere Auslastung der Tasks approximiert:
+    \begin{equation}
+        \delta'(k, \Delta t, \tau) = \begin{cases}
+            \delta(\Delta t, \tau) & \Delta t \leq k p_\tau + d_\tau \\
+            \delta(kp_\tau+d_\tau, \tau) + \frac{c^+_\tau}{p_\tau}
+            (\Delta t - (k p_\tau + d_\tau)) & \text{sonst}
+        \end{cases}
+    \end{equation}
+\end{tcolorbox}
+Beweis: zeigen das $\delta'(k, \Delta t, \tau) \geq \delta(\Delta t, \tau)$.
+
+\begin{tcolorbox}
+    Der \textbf{Fehler der Approximation durch Superposition} ist umgekehrt
+    Proportional zur Anzahl der Testpunkte:
+    \begin{equation}
+        \varepsilon \leq \frac{1}{k}
+    \end{equation}
+\end{tcolorbox}
+
+\subsection{Ablaufplanung nach Prioritäten}
+Ansatz: Antwortzeitanalyse.
+
+\begin{tcolorbox}
+    \textbf{Antwortzeitanaylse:} Die Antwortzeit einer Task $\tau_i$ in einem
+    prioritätengesteuerten System ist die maximale Nettoausführungszeit $c^+$
+    der Task addiert mit dern maximalen Nettoausführungszeiten aller Tasks mit einer
+    höheren Priorität als die betrachtete Task, $\tau \in \Gamma_\text{HP}$.
+
+    Die Antwortzeit ist dann gegeben durch:
+    \begin{equation}
+        r_i^+(n) = c_i^+ + \sum_{\tau \in \Gamma_\text{HP}} \check{\eta}(
+            r_i^+(n-1), \hat{\Theta}_j) c_\theta^+
+    \end{equation}
+    mit
+    \begin{equation}
+        r^+_i(0) = c_i^+
+    \end{equation}
+    dabei wird die Rekursion bis zur Konvergenz berechnet.
+\end{tcolorbox}
+
+\section{Modulare Analyse verteilter Systeme}
+
