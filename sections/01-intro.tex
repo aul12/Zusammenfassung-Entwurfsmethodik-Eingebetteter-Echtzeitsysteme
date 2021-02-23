@@ -63,6 +63,18 @@ physikalischen Prozess und einem Zählwerk, das die Anzahl der Schwingungen zäh
 Zählstand wird zu jeder Zeit angezeigt.
 \end{tcolorbox}
 
+Uhrgleichung:
+\begin{equation}
+    c(t) = \floor*{\frac{(1+d)t}{p}} G \mod O
+\end{equation}
+mit:
+\begin{itemize}
+    \item $d$: Gangfehler
+    \item $p$: Periode
+    \item $G$: Granularität
+    \item $O$: Overflow
+\end{itemize}
+
 Historisch:
 \begin{itemize}
     \item Zeit über Tag (aber nicht gleich lang): Sonne als Periodischer Oszillator aber zu grob.
